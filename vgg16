@@ -5,36 +5,22 @@ conv_base = VGG16(weights='imagenet',
 for layer in conv_base.layers[:7]:
     layer.trainable = False
 #conv_base.compile()
-
-
-
-
 add_model = Sequential()
 add_model.add(Flatten(input_shape=conv_base.output_shape[1:]))
 add_model.add(Dense(256, activation='relu'))
 add_model.add(Dense(7, activation='sigmoid'))
-
 model = Model(inputs=conv_base.input, outputs=add_model(conv_base.output))
 model.compile(loss='binary_crossentropy', optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
               metrics=['accuracy'])
 
 #layers_to_freeze = [0, 2, 4]
-
-
-
 model.summary()
-
 import copy
 #model2 = copy.deepcopy(conv_base)
-
-
-
 from keras.preprocessing.image import ImageDataGenerator
 from keras.callbacks import ModelCheckpoint
-    
 batch_size = 24
 epochs = 100
- 
 k = 10 
 train_datagen = ImageDataGenerator(
             rotation_range=30, 
@@ -43,8 +29,6 @@ train_datagen = ImageDataGenerator(
             horizontal_flip=True)
 kf = KFold(n_splits=k)
 kf.get_n_splits(train_images)
-
-
 pred = np.zeros((len(train_images),7))
 test_pred = np.zeros((len(test_images),7))
 for train_index, test_index in kf.split(train_images):
@@ -63,9 +47,6 @@ for train_index, test_index in kf.split(train_images):
     test_pred += model.predict(test_images)
    # gmodel = model.fit(X_train,y_train,batch_size=1,epochs=1,
     # callbacks=[ModelCheckpoint('VGG16-transferlearning.model', monitor='val_acc', save_best_only=True)])
-
-
 print(log_loss(train_labels,pred))
 test_pred /= k
-
 predictions = model.predict(test_images)
