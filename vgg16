@@ -10,7 +10,7 @@ add_model.add(Flatten(input_shape=conv_base.output_shape[1:]))
 add_model.add(Dense(256, activation='relu'))
 add_model.add(Dense(7, activation='sigmoid'))
 model = Model(inputs=conv_base.input, outputs=add_model(conv_base.output))
-model.compile(loss='binary_crossentropy', optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
+model.compile(loss='categorical_crossentropy', optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
               metrics=['accuracy'])
 
 #layers_to_freeze = [0, 2, 4]
