@@ -23,7 +23,7 @@ train_datagen = ImageDataGenerator(
             rotation_range=30, 
             width_shift_range=0.1,
             height_shift_range=0.1, 
-            horizontal_flip=True)
+            vartical_flip=True)
 kf = KFold(n_splits=k)
 kf.get_n_splits(train_images)
 
